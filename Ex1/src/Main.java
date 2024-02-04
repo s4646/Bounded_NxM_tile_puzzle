@@ -5,5 +5,7 @@ public class Main {
         myReader.getInput("input.txt");
         System.out.println(myReader.toString());
         // System.out.println("Working Directory = " + System.getProperty("user.dir"));
+        Board myBoard = new Board(myReader.getBoard());
+        System.out.println(myBoard.toString());
     }
 }
