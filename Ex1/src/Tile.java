@@ -12,7 +12,14 @@ public class Tile {
     public Tile(String c)
     {
         this.content = c;
-        this.type = 0;
+        this.type = c.equals("_") ? 2 : 0; // if '_' set to empty
+    }
+
+    public Tile(String c, int ml)
+    {
+        this.content = c;
+        this.type = 1;
+        this.movesLeft = ml;
     }
 
     public void setContent(String s)
