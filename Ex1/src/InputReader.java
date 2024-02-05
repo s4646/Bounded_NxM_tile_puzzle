@@ -35,6 +35,11 @@ public class InputReader {
         return this.board;
     }
 
+    public String getWhiteTiles()
+    {
+        return this.whiteTiles;
+    }
+
     @Override
     public String toString()
     {
