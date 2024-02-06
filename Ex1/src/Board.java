@@ -2,6 +2,7 @@ import java.util.HashMap;
 
 public class Board {
     private Tile[][] board;
+    private int[] emptyTileLocation;
     private HashMap<String, Integer> whiteTiles; // content, moves
     private int rows;
     private int cols;
@@ -25,6 +26,9 @@ public class Board {
                 else {
                     board[i][j] = new Tile(content[j]);
                 }
+
+                if (content[j].equals("_"))
+                    emptyTileLocation = new int[] {i, j};
             }
         }
     }
@@ -43,6 +47,16 @@ public class Board {
         }
 
         return whiteTiles;
+    }
+
+    public int[] getEmptyTileLocation()
+    {
+        return emptyTileLocation;
+    }
+
+    public Tile[][] getBoard()
+    {
+        return this.board;
     }
 
     @Override
