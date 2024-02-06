@@ -1,4 +1,6 @@
+import java.util.Set;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class Board {
     private Tile[][] board;
@@ -57,6 +59,17 @@ public class Board {
     public Tile[][] getBoard()
     {
         return this.board;
+    }
+
+    public String whiteTilesToString()
+    {
+        String ret = " ";
+        Set<Entry<String, Integer>> items = whiteTiles.entrySet();
+        
+        for (Entry<String, Integer> item : items) {
+           ret += "("+item.getKey()+","+item.getValue()+"),"; 
+        }
+        return ret.substring(0, ret.length()-1);
     }
 
     @Override
