@@ -22,6 +22,13 @@ public class Tile {
         this.movesLeft = ml;
     }
 
+    public Tile(String c, int t, int ml) // clone
+    {
+        this.content = c;
+        this.type = 1;
+        this.movesLeft = ml;
+    }
+
     public void setContent(String s)
     {
         this.content = s;
@@ -50,5 +57,10 @@ public class Tile {
     public int getMovesLeft()
     {
         return this.movesLeft;
+    }
+
+    public Tile clone()
+    {
+        return new Tile(this.content, this.type, this.movesLeft);
     }
 }

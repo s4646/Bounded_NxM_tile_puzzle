@@ -35,6 +35,15 @@ public class Board {
         }
     }
 
+    public Board(Tile[][] b, int[] emptyloc, HashMap<String, Integer> wt) // clone
+    {
+        this.board = b;
+        this.emptyTileLocation = emptyloc;
+        this. whiteTiles = wt;
+        this.rows = this.board.length;
+        this.cols = this.board[0].length;
+    }
+
     public HashMap<String, Integer> getWhiteTiles(String w)
     {
         HashMap<String, Integer> whiteTiles = new HashMap<String, Integer>();
@@ -75,6 +84,12 @@ public class Board {
            ret += "("+item.getKey()+","+item.getValue()+"),"; 
         }
         return ret.substring(0, ret.length()-1);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Board clone()
+    {
+        return new Board(this.board.clone(), this.emptyTileLocation.clone(), (HashMap<String, Integer>)this.whiteTiles.clone());
     }
 
     @Override
