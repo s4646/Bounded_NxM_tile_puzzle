@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 public class Board {
-    private Tile[][] board;
+    private Tile[][] tiles;
     private int[] emptyTileLocation;
     private HashMap<String, Integer> whiteTiles; // content, moves
     private int rows;
@@ -14,7 +14,7 @@ public class Board {
         this.rows = (int)(b.chars().filter(ch -> ch == '\n').count());
         this.cols = (int)(b.split("\n")[0].chars().filter(ch -> ch == ',').count()) + 1;
         // System.out.println("rows: "+rows+", cols: "+cols);
-        this.board = new Tile[rows][cols];
+        this.tiles = new Tile[rows][cols];
         this.whiteTiles = setWhiteTiles(w);
 
         String[] rows_content = b.split("\n");
@@ -23,10 +23,10 @@ public class Board {
             String[] content = rows_content[i].split(",");
             for (int j = 0; j < cols; j++) {
                 if (whiteTiles.containsKey(content[j])) {
-                    board[i][j] = new Tile(content[j], whiteTiles.get(content[j]));
+                    tiles[i][j] = new Tile(content[j], whiteTiles.get(content[j]));
                 }
                 else {
-                    board[i][j] = new Tile(content[j]);
+                    tiles[i][j] = new Tile(content[j]);
                 }
 
                 if (content[j].equals("_"))
@@ -37,11 +37,11 @@ public class Board {
 
     public Board(Tile[][] b, int[] emptyloc, HashMap<String, Integer> wt) // clone
     {
-        this.board = b;
+        this.tiles = b;
         this.emptyTileLocation = emptyloc;
         this. whiteTiles = wt;
-        this.rows = this.board.length;
-        this.cols = this.board[0].length;
+        this.rows = this.tiles.length;
+        this.cols = this.tiles[0].length;
     }
 
     public HashMap<String, Integer> setWhiteTiles(String w)
@@ -65,9 +65,9 @@ public class Board {
         return emptyTileLocation;
     }
 
-    public Tile[][] getBoard()
+    public Tile[][] getTiles()
     {
-        return this.board;
+        return this.tiles;
     }
 
     public int[] getSize()
@@ -94,11 +94,11 @@ public class Board {
     @SuppressWarnings({"unchecked"})
     public Board clone()
     {
-        Tile[][] clTiles = new Tile[this.board.length][];
-        for (int i = 0; i < this.board.length; i++) {
-            clTiles[i] = new Tile[this.board[i].length];
-            for (int j = 0; j < this.board[i].length; j++) {
-                clTiles[i][j] = board[i][j].clone();
+        Tile[][] clTiles = new Tile[this.tiles.length][];
+        for (int i = 0; i < this.tiles.length; i++) {
+            clTiles[i] = new Tile[this.tiles[i].length];
+            for (int j = 0; j < this.tiles[i].length; j++) {
+                clTiles[i][j] = tiles[i][j].clone();
             }
         }
         return new Board(clTiles, this.emptyTileLocation.clone(), (HashMap<String, Integer>)this.whiteTiles.clone());
@@ -110,7 +110,7 @@ public class Board {
         String ret = "";
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                    ret += board[i][j].getContent();
+                    ret += tiles[i][j].getContent();
                     if (j != cols-1) {
                         ret += ",";
                     }

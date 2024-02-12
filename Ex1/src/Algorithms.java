@@ -16,14 +16,14 @@ public class Algorithms {
         int[] emptyPos = n.getBoard().getEmptyTileLocation();
         LinkedList<Character> operators = new LinkedList<Character>();
 
-        if (emptyPos[1] != 0)
-            operators.add('L');         // Left
-        if (emptyPos[0] != 1)
-            operators.add('U');         // Up
-        if (emptyPos[1] != boardSize[1])
-            operators.add('R');         // Right
-        if (emptyPos[0] != boardSize[0])
-            operators.add('D');         // Down
+        if (emptyPos[1] != 0)               // Left
+            operators.add('L');         
+        if (emptyPos[0] != 0)               // Up
+            operators.add('U');         
+        if (emptyPos[1] != boardSize[1]-1)  // Right
+            operators.add('R');         
+        if (emptyPos[0] != boardSize[0]-1)  // Down
+            operators.add('D');         
 
         return operators;
 
@@ -50,6 +50,102 @@ public class Algorithms {
             b += '\n';
         }
         return b;
+    }
+
+    public static Node operate(Node n, char operator)
+    {
+        Node kid = new Node(n.getBoard().clone());
+        Tile[][] board = kid.getBoard().getTiles();
+        int[] emptyloc = kid.getBoard().getEmptyTileLocation();
+        int[] swaploc = new int[2];
+        Tile temp = null;
+
+        switch (operator) {
+            case 'L':
+                swaploc[0] = emptyloc[0];
+                swaploc[1] = emptyloc[1]-1;
+                temp = board[swaploc[0]][swaploc[1]].clone();
+                
+                // white tile
+                if (temp.getType() == 1) {
+                    if (temp.getMovesLeft() > 0)
+                        kid.getBoard().getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
+                    else
+                        return null;
+                }
+                
+                // swap tiles
+                board[swaploc[0]][swaploc[1]] = board[emptyloc[0]][emptyloc[1]];
+                board[emptyloc[0]][emptyloc[1]] = temp;
+                emptyloc[0] = swaploc[0];
+                emptyloc[1] = swaploc[1];
+                break;
+            
+            case 'U':
+                swaploc[0] = emptyloc[0]-1;
+                swaploc[1] = emptyloc[1];
+                temp = board[swaploc[0]][swaploc[1]].clone();
+                
+                // white tile
+                if (temp.getType() == 1) {
+                    if (temp.getMovesLeft() > 0)
+                        kid.getBoard().getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
+                    else
+                        return null;
+                }
+                
+                // swap tiles
+                board[swaploc[0]][swaploc[1]] = board[emptyloc[0]][emptyloc[1]];
+                board[emptyloc[0]][emptyloc[1]] = temp;
+                emptyloc[0] = swaploc[0];
+                emptyloc[1] = swaploc[1];
+                break;
+
+            case 'R':
+                swaploc[0] = emptyloc[0];
+                swaploc[1] = emptyloc[1]+1;
+                temp = board[swaploc[0]][swaploc[1]].clone();
+                
+                // white tile
+                if (temp.getType() == 1) {
+                    if (temp.getMovesLeft() > 0)
+                        kid.getBoard().getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
+                    else
+                        return null;
+                }
+                
+                // swap tiles
+                board[swaploc[0]][swaploc[1]] = board[emptyloc[0]][emptyloc[1]];
+                board[emptyloc[0]][emptyloc[1]] = temp;
+                emptyloc[0] = swaploc[0];
+                emptyloc[1] = swaploc[1];
+                break;
+
+            case 'D':
+                swaploc[0] = emptyloc[0]+1;
+                swaploc[1] = emptyloc[1];
+                temp = board[swaploc[0]][swaploc[1]].clone();
+                
+                // white tile
+                if (temp.getType() == 1) {
+                    if (temp.getMovesLeft() > 0)
+                        kid.getBoard().getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
+                    else
+                        return null;
+                }
+                
+                // swap tiles
+                board[swaploc[0]][swaploc[1]] = board[emptyloc[0]][emptyloc[1]];
+                board[emptyloc[0]][emptyloc[1]] = temp;
+                emptyloc[0] = swaploc[0];
+                emptyloc[1] = swaploc[1];
+                break;
+        
+            default:
+                break;
+        }
+
+        return kid;
     }
 
     public static String dfid(Node start, Node goal)
