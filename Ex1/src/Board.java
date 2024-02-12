@@ -75,6 +75,11 @@ public class Board {
         return new int[]{this.rows, this.cols};
     }
 
+    public HashMap<String, Integer> getWhiteTiles()
+    {
+        return this.whiteTiles;
+    }
+
     public String whiteTilesToString()
     {
         String ret = " ";
@@ -86,10 +91,17 @@ public class Board {
         return ret.substring(0, ret.length()-1);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked"})
     public Board clone()
     {
-        return new Board(this.board.clone(), this.emptyTileLocation.clone(), (HashMap<String, Integer>)this.whiteTiles.clone());
+        Tile[][] clTiles = new Tile[this.board.length][];
+        for (int i = 0; i < this.board.length; i++) {
+            clTiles[i] = new Tile[this.board[i].length];
+            for (int j = 0; j < this.board[i].length; j++) {
+                clTiles[i][j] = board[i][j].clone();
+            }
+        }
+        return new Board(clTiles, this.emptyTileLocation.clone(), (HashMap<String, Integer>)this.whiteTiles.clone());
     }
 
     @Override
