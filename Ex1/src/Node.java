@@ -5,13 +5,11 @@ public class Node {
     public Node(Board b) // constructor to start node
     {
         this.board = b;
-        // this.next = new Node[4];
     }
 
     public Node(String b, String w)
     {
         this.board = new Board(b, w);
-        // this.next = new Node[4];
     }
 
     public Board getBoard()
@@ -19,8 +17,8 @@ public class Node {
         return this.board;
     }
     
-    public void setNext(Node[] nodes)
+    public void createNextArray(int size)
     {
-        // TODO
+        this.next = new Node[size];
     }
 }
