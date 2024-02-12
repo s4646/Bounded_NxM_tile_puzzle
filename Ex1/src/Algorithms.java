@@ -1,12 +1,32 @@
 import java.util.Stack;
 import java.util.Queue;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class Algorithms {
 
-    public static boolean compareCurrentToGoal(Node current, Node goal)
+    public static boolean isGoal(Node current, Node goal)
     {
         return current.getBoard().toString().equals(goal.getBoard().toString());
+    }
+
+    public static LinkedList<Character> getValidOperators(Node n)
+    {
+        int[] boardSize = n.getBoard().getSize();
+        int[] emptyPos = n.getBoard().getEmptyTileLocation();
+        LinkedList<Character> operators = new LinkedList<Character>();
+
+        if (emptyPos[1] != 0)
+            operators.add('L');         // Left
+        if (emptyPos[0] != 1)
+            operators.add('U');         // Up
+        if (emptyPos[1] != boardSize[1])
+            operators.add('R');         // Right
+        if (emptyPos[0] != boardSize[0])
+            operators.add('D');         // Down
+
+        return operators;
+
     }
 
     public static String goalString(int[] size)
@@ -46,6 +66,19 @@ public class Algorithms {
 
     public static String limitedDfs(Node n, Node goal, int limit, HashMap<String, Node> h, String path)
     {
+        // TODO
+        if (isGoal(n, goal)) return path;
+        if (limit == 0) return "cutoff";
+        
+        h.put(n.getBoard().toString(), n);
+        String isCutoff = "false";
+
+        LinkedList<Character> ops = getValidOperators(n);
+        n.createNextArray(ops.size());
+        for (Character op : ops) {
+            
+        }
+
         return path;
     }
 }
