@@ -61,6 +61,11 @@ public class Board {
         return this.board;
     }
 
+    public int[] getSize()
+    {
+        return new int[]{this.rows, this.cols};
+    }
+
     public String whiteTilesToString()
     {
         String ret = " ";
