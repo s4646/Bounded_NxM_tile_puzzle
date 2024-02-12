@@ -15,7 +15,7 @@ public class Board {
         this.cols = (int)(b.split("\n")[0].chars().filter(ch -> ch == ',').count()) + 1;
         // System.out.println("rows: "+rows+", cols: "+cols);
         this.board = new Tile[rows][cols];
-        this.whiteTiles = getWhiteTiles(w);
+        this.whiteTiles = setWhiteTiles(w);
 
         String[] rows_content = b.split("\n");
         for (int i = 0; i < rows; i++) {
@@ -44,7 +44,7 @@ public class Board {
         this.cols = this.board[0].length;
     }
 
-    public HashMap<String, Integer> getWhiteTiles(String w)
+    public HashMap<String, Integer> setWhiteTiles(String w)
     {
         HashMap<String, Integer> whiteTiles = new HashMap<String, Integer>();
         String[] rawTilesInput = w.split("\\(");
