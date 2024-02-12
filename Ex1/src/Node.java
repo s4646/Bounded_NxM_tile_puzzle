@@ -5,12 +5,22 @@ public class Node {
     public Node(Board b) // constructor to start node
     {
         this.board = b;
-        this.next = new Node[4];
+        // this.next = new Node[4];
     }
 
     public Node(String b, String w)
     {
         this.board = new Board(b, w);
-        this.next = new Node[4];
+        // this.next = new Node[4];
+    }
+
+    public Board getBoard()
+    {
+        return this.board;
+    }
+    
+    public void setNext(Node[] nodes)
+    {
+        // TODO
     }
 }
