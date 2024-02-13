@@ -23,18 +23,24 @@ public class Solver {
     public void solve()
     {
         Node goal = new Node(new Board(Algorithms.goalString(this.board.getSize()), ""));
-        time = System.nanoTime();
         
         if (this.algorithm.equals("DFID")) {
+            time = System.nanoTime();
             this.solution = Algorithms.DFID(this.start, goal);
+            time = System.nanoTime()-time;
         }
 
-        time = System.nanoTime()-time;
     }
 
     public String getSolution()
     {
-        return solution;
+        String[] sol = this.solution.split(",");
+        if (sol.length >= 2) {
+            this.solution = sol[0];
+            this.numOfNodes = Integer.parseInt(sol[1]);
+            return this.solution+"\nnum: "+this.numOfNodes+"\ntime: "+String.format("%.3f",(double)time/1000000000);
+        }
+        else return sol[0];
     }
 
 }
