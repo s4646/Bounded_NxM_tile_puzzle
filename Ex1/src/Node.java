@@ -4,7 +4,6 @@ public class Node {
     private Board board;
     private Node prev;
     private LinkedList<Node> next;
-    private String operation;
 
     public Node(Board b) // constructor to start node
     {
