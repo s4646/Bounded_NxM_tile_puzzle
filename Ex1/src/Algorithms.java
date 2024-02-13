@@ -1,4 +1,5 @@
 import java.util.Stack;
+import java.util.concurrent.atomic.AtomicInteger;
 // import java.util.Queue;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -12,10 +13,22 @@ public class Algorithms {
 
     public static LinkedList<Character> getValidOperators(Node n)
     {
+        // Valid operations for the EMPTY TILE, for red/white tiles reverse operators, meaning 'L' -> 'R' etc.
         int[] boardSize = n.getBoard().getSize();
         int[] emptyPos = n.getBoard().getEmptyTileLocation();
         LinkedList<Character> operators = new LinkedList<Character>();
 
+        /* CORRECT ORDER FOR RED/WHITE TILES */
+        if (emptyPos[1] != boardSize[1]-1)  // Right
+            operators.add('R'); 
+        if (emptyPos[0] != boardSize[0]-1)  // Down
+            operators.add('D');
+        if (emptyPos[1] != 0)               // Left
+            operators.add('L');
+        if (emptyPos[0] != 0)               // Up
+            operators.add('U');
+        
+        /* ORDER FOR EMPTY TILE
         if (emptyPos[1] != 0)               // Left
             operators.add('L');         
         if (emptyPos[0] != 0)               // Up
@@ -23,7 +36,8 @@ public class Algorithms {
         if (emptyPos[1] != boardSize[1]-1)  // Right
             operators.add('R');         
         if (emptyPos[0] != boardSize[0]-1)  // Down
-            operators.add('D');         
+            operators.add('D');
+        */      
 
         return operators;
 
@@ -184,18 +198,19 @@ public class Algorithms {
     
     public static String DFID(Node start, Node goal)
     {
+        AtomicInteger numOfNodes = new AtomicInteger();
         for (int limit = 0; limit < Integer.MAX_VALUE; limit++) {
             HashMap<String, Node> H = new HashMap<String, Node>();
-            String result = limited_DFS(start, goal, limit, H);
+            String result = limited_DFS(start, goal, limit, H, numOfNodes);
             if (!result.equals("cutoff")) return result;
         }
         return "";
     }
 
-    public static String limited_DFS(Node n, Node goal, int limit, HashMap<String,Node> H)
+    public static String limited_DFS(Node n, Node goal, int limit, HashMap<String,Node> H, AtomicInteger numOfNodes)
     {
         if (isGoal(n, goal))
-            return getPath(n);
+            return getPath(n)+","+numOfNodes.get();
         else if (limit == 0) return "cutoff";
         else {
             H.put(n.getBoard().toString(), n);
@@ -209,7 +224,8 @@ public class Algorithms {
                 g.setPrev(n);
                 if (H.containsKey(g.getBoard().toString())) continue;
                 H.put(g.getBoard().toString(), g);
-                String result = limited_DFS(g, goal, limit-1, H);
+                numOfNodes.getAndIncrement();
+                String result = limited_DFS(g, goal, limit-1, H, numOfNodes);
                 if (result.equals("cutoff")) isCutOff = true;
                 else if (!result.equals("fail")) return result;
             }
