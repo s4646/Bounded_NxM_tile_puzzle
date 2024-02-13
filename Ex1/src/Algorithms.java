@@ -1,5 +1,5 @@
 import java.util.Stack;
-import java.util.Queue;
+// import java.util.Queue;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -55,7 +55,7 @@ public class Algorithms {
     public static Node operate(Node n, char operator)
     {
         Node kid = new Node(n.getBoard().clone());
-        Tile[][] board = kid.getBoard().getTiles();
+        Tile[][] tiles = kid.getBoard().getTiles();
         int[] emptyloc = kid.getBoard().getEmptyTileLocation();
         int[] swaploc = new int[2];
         Tile temp = null;
@@ -64,7 +64,7 @@ public class Algorithms {
             case 'L':
                 swaploc[0] = emptyloc[0];
                 swaploc[1] = emptyloc[1]-1;
-                temp = board[swaploc[0]][swaploc[1]].clone();
+                temp = tiles[swaploc[0]][swaploc[1]].clone();
                 
                 // white tile
                 if (temp.getType() == 1) {
@@ -75,8 +75,8 @@ public class Algorithms {
                 }
                 
                 // swap tiles
-                board[swaploc[0]][swaploc[1]] = board[emptyloc[0]][emptyloc[1]];
-                board[emptyloc[0]][emptyloc[1]] = temp;
+                tiles[swaploc[0]][swaploc[1]] = tiles[emptyloc[0]][emptyloc[1]];
+                tiles[emptyloc[0]][emptyloc[1]] = temp;
                 emptyloc[0] = swaploc[0];
                 emptyloc[1] = swaploc[1];
                 break;
@@ -84,7 +84,7 @@ public class Algorithms {
             case 'U':
                 swaploc[0] = emptyloc[0]-1;
                 swaploc[1] = emptyloc[1];
-                temp = board[swaploc[0]][swaploc[1]].clone();
+                temp = tiles[swaploc[0]][swaploc[1]].clone();
                 
                 // white tile
                 if (temp.getType() == 1) {
@@ -95,8 +95,8 @@ public class Algorithms {
                 }
                 
                 // swap tiles
-                board[swaploc[0]][swaploc[1]] = board[emptyloc[0]][emptyloc[1]];
-                board[emptyloc[0]][emptyloc[1]] = temp;
+                tiles[swaploc[0]][swaploc[1]] = tiles[emptyloc[0]][emptyloc[1]];
+                tiles[emptyloc[0]][emptyloc[1]] = temp;
                 emptyloc[0] = swaploc[0];
                 emptyloc[1] = swaploc[1];
                 break;
@@ -104,7 +104,7 @@ public class Algorithms {
             case 'R':
                 swaploc[0] = emptyloc[0];
                 swaploc[1] = emptyloc[1]+1;
-                temp = board[swaploc[0]][swaploc[1]].clone();
+                temp = tiles[swaploc[0]][swaploc[1]].clone();
                 
                 // white tile
                 if (temp.getType() == 1) {
@@ -115,8 +115,8 @@ public class Algorithms {
                 }
                 
                 // swap tiles
-                board[swaploc[0]][swaploc[1]] = board[emptyloc[0]][emptyloc[1]];
-                board[emptyloc[0]][emptyloc[1]] = temp;
+                tiles[swaploc[0]][swaploc[1]] = tiles[emptyloc[0]][emptyloc[1]];
+                tiles[emptyloc[0]][emptyloc[1]] = temp;
                 emptyloc[0] = swaploc[0];
                 emptyloc[1] = swaploc[1];
                 break;
@@ -124,7 +124,7 @@ public class Algorithms {
             case 'D':
                 swaploc[0] = emptyloc[0]+1;
                 swaploc[1] = emptyloc[1];
-                temp = board[swaploc[0]][swaploc[1]].clone();
+                temp = tiles[swaploc[0]][swaploc[1]].clone();
                 
                 // white tile
                 if (temp.getType() == 1) {
@@ -135,8 +135,8 @@ public class Algorithms {
                 }
                 
                 // swap tiles
-                board[swaploc[0]][swaploc[1]] = board[emptyloc[0]][emptyloc[1]];
-                board[emptyloc[0]][emptyloc[1]] = temp;
+                tiles[swaploc[0]][swaploc[1]] = tiles[emptyloc[0]][emptyloc[1]];
+                tiles[emptyloc[0]][emptyloc[1]] = temp;
                 emptyloc[0] = swaploc[0];
                 emptyloc[1] = swaploc[1];
                 break;
@@ -147,34 +147,76 @@ public class Algorithms {
 
         return kid;
     }
-
-    public static String dfid(Node start, Node goal)
+    
+    public static String getPath(Node n)
     {
-        for (int i = 0; i < Integer.MAX_VALUE; i++) {
+        String path = "";
+        Node pointer = n;
+        Stack<Node> nodeStack = new Stack<Node>();
+        LinkedList<Node> nodePath = new LinkedList<Node>();
+        
+        while (pointer != null) {
+            nodeStack.add(pointer);
+            pointer = pointer.getPrev();
+        }
+        while (!nodeStack.isEmpty()) nodePath.add(nodeStack.pop());
+        
+        int listSize = nodePath.size();
+        for (int i = 0; i < listSize-1; i++) {
+            Node curr = nodePath.get(i);
+            Node next = nodePath.get(i+1);
+            int[] currEmptyLoc = curr.getBoard().getEmptyTileLocation();
+            int[] nextEmptyLoc = next.getBoard().getEmptyTileLocation();
+
+            if (nextEmptyLoc[0]-currEmptyLoc[0] == 1)
+                path += curr.getBoard().getTiles()[nextEmptyLoc[0]][nextEmptyLoc[1]].getContent()+"U";
+            else if (nextEmptyLoc[0]-currEmptyLoc[0] == -1)
+                path += curr.getBoard().getTiles()[nextEmptyLoc[0]][nextEmptyLoc[1]].getContent()+"D";
+            else if (nextEmptyLoc[1]-currEmptyLoc[1] == 1)
+                path += curr.getBoard().getTiles()[nextEmptyLoc[0]][nextEmptyLoc[1]].getContent()+"L";
+            else if (nextEmptyLoc[1]-currEmptyLoc[1] == -1)
+                path += curr.getBoard().getTiles()[nextEmptyLoc[0]][nextEmptyLoc[1]].getContent()+"R";
+            if (i != listSize-2) path+="-";
+        }
+
+        return path;
+    }
+    
+    public static String DFID(Node start, Node goal)
+    {
+        for (int limit = 0; limit < Integer.MAX_VALUE; limit++) {
             HashMap<String, Node> H = new HashMap<String, Node>();
-            String result = limitedDfs(start, goal, 0, H, "");
-            if (!result.equals("cutoff")) {
-                return result;
-            }
+            String result = limited_DFS(start, goal, limit, H);
+            if (!result.equals("cutoff")) return result;
         }
         return "";
     }
 
-    public static String limitedDfs(Node n, Node goal, int limit, HashMap<String, Node> h, String path)
+    public static String limited_DFS(Node n, Node goal, int limit, HashMap<String,Node> H)
     {
-        // TODO
-        if (isGoal(n, goal)) return path;
-        if (limit == 0) return "cutoff";
-        
-        h.put(n.getBoard().toString(), n);
-        String isCutoff = "false";
-
-        LinkedList<Character> ops = getValidOperators(n);
-        n.createNextArray(ops.size());
-        for (Character op : ops) {
+        if (isGoal(n, goal))
+            return getPath(n);
+        else if (limit == 0) return "cutoff";
+        else {
+            H.put(n.getBoard().toString(), n);
+            boolean isCutOff = false;
             
-        }
+            LinkedList<Character> operators = getValidOperators(n);
+            for (Character operator : operators) {
+                Node g = operate(n, operator);
+                if (g == null) continue;
+                n.addNext(g);
+                g.setPrev(n);
+                if (H.containsKey(g.getBoard().toString())) continue;
+                H.put(g.getBoard().toString(), g);
+                String result = limited_DFS(g, goal, limit-1, H);
+                if (result.equals("cutoff")) isCutOff = true;
+                else if (!result.equals("fail")) return result;
+            }
 
-        return path;
+            H.remove(n.getBoard().toString());
+            if (isCutOff == true) return "cutoff";
+            else return "fail";
+        }
     }
 }
