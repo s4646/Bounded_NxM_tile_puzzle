@@ -40,6 +40,21 @@ public class InputReader {
         return this.whiteTiles;
     }
 
+    public String getWithTime()
+    {
+        return this.withTime;
+    }
+
+    public String getPrintOpenList()
+    {
+        return this.printOpenList;
+    }
+
+    public String getAlgorithm()
+    {
+        return this.algorithm;
+    }
+
     @Override
     public String toString()
     {
