@@ -25,7 +25,7 @@ public class Tile {
     public Tile(String c, int t, int ml) // clone
     {
         this.content = c;
-        this.type = 1;
+        this.type = t;
         this.movesLeft = ml;
     }
 
