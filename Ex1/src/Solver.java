@@ -7,6 +7,8 @@ public class Solver {
     private int cost = 0;
     private int numOfNodes = 0;
     private Board board;
+    private String solution = "";
+    long time;
 
 
     public Solver(Board b, String alg, String wt, String pol)
@@ -18,13 +20,21 @@ public class Solver {
         this.start = new Node(this.board);
     }
 
-    public void solve(String alg)
+    public void solve()
     {
         Node goal = new Node(new Board(Algorithms.goalString(this.board.getSize()), ""));
-        String solution;
-        if (alg.equals("DFID")) {
-            solution = Algorithms.dfid(this.start, goal);
+        time = System.nanoTime();
+        
+        if (this.algorithm.equals("DFID")) {
+            this.solution = Algorithms.DFID(this.start, goal);
         }
+
+        time = System.nanoTime()-time;
+    }
+
+    public String getSolution()
+    {
+        return solution;
     }
 
 }
