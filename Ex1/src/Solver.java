@@ -29,6 +29,11 @@ public class Solver {
             this.solution = Algorithms.DFID(this.start, goal);
             time = System.nanoTime()-time;
         }
+        else if (this.algorithm.equals("A*")) {
+            time = System.nanoTime();
+            this.solution = Algorithms.A_Star(this.start, goal);
+            time = System.nanoTime()-time;
+        }
 
     }
 
@@ -40,7 +45,7 @@ public class Solver {
         ret += "\nnum: "+this.numOfNodes;
         this.cost = Integer.parseInt(sol[2]);
         ret += "\ncost: "+this.cost;
-        if (this.withTime) ret += "\ntime: "+String.format("%.3f",(double)time/1000000000);
+        if (this.withTime) ret += "\ntime: "+String.format("%.3f",(double)time/1000000000)+" seconds";
         return ret;
     }
 
