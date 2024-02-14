@@ -5,6 +5,7 @@ public class Node {
     private Node prev;
     private LinkedList<Node> next;
     private boolean whiteTileMoved;
+    private int cost;
 
     public Node(Board b) // constructor to start node
     {
@@ -12,6 +13,7 @@ public class Node {
         this.prev = null;
         this.next = new LinkedList<Node>();
         whiteTileMoved = false;
+        cost = 0;
     }
 
     public Node(String b, String w)
@@ -20,6 +22,7 @@ public class Node {
         this.prev = null;
         this.next = new LinkedList<Node>();
         whiteTileMoved = false;
+        cost = 0;
     }
 
     public Board getBoard()
@@ -50,5 +53,15 @@ public class Node {
     public boolean isWhiteTileMoved()
     {
         return this.whiteTileMoved;
+    }
+
+    public void setCost(int c)
+    {
+        this.cost = c;
+    }
+
+    public int getCost()
+    {
+        return this.cost;
     }
 }
