@@ -1,6 +1,6 @@
 import java.util.LinkedList;
 
-public class Node {
+public class Node implements Comparable<Node>{
     private Board board;
     private Node prev;
     private LinkedList<Node> next;
@@ -63,5 +63,17 @@ public class Node {
     public int getCost()
     {
         return this.cost;
+    }
+
+    @Override
+    public String toString()
+    {
+        return this.board.toString();
+    }
+
+    @Override
+    public int compareTo(Node ot)
+    {
+        return Integer.compare(this.cost, ot.getCost());
     }
 }
