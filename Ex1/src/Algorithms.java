@@ -85,10 +85,12 @@ public class Algorithms {
                     if (temp.getMovesLeft() > 0) {
                         kid.getBoard().getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
                         kid.setWhiteTileMoved(true);
+                        kid.setCost(n.getCost()+1);
                     }
                     else
                         return null;
                 }
+                else kid.setCost(n.getCost()+30);
                 
                 // swap tiles
                 tiles[swaploc[0]][swaploc[1]] = tiles[emptyloc[0]][emptyloc[1]];
@@ -107,10 +109,12 @@ public class Algorithms {
                     if (temp.getMovesLeft() > 0) {
                         kid.getBoard().getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
                         kid.setWhiteTileMoved(true);
+                        kid.setCost(n.getCost()+1);
                     }
                     else
                         return null;
                 }
+                else kid.setCost(n.getCost()+30);
                 
                 // swap tiles
                 tiles[swaploc[0]][swaploc[1]] = tiles[emptyloc[0]][emptyloc[1]];
@@ -129,10 +133,12 @@ public class Algorithms {
                     if (temp.getMovesLeft() > 0) {
                         kid.getBoard().getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
                         kid.setWhiteTileMoved(true);
+                        kid.setCost(n.getCost()+1);
                     }
                     else
                         return null;
                 }
+                else kid.setCost(n.getCost()+30);
                 
                 // swap tiles
                 tiles[swaploc[0]][swaploc[1]] = tiles[emptyloc[0]][emptyloc[1]];
@@ -151,10 +157,12 @@ public class Algorithms {
                     if (temp.getMovesLeft() > 0) {
                         kid.getBoard().getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
                         kid.setWhiteTileMoved(true);
+                        kid.setCost(n.getCost()+1);
                     }
                     else
                         return null;
                 }
+                else kid.setCost(n.getCost()+30);
                 
                 // swap tiles
                 tiles[swaploc[0]][swaploc[1]] = tiles[emptyloc[0]][emptyloc[1]];
@@ -170,7 +178,7 @@ public class Algorithms {
         return kid;
     }
     
-    public static String getPath(Node n, AtomicInteger cost)
+    public static String getPath(Node n)
     {
         String path = "";
         Node pointer = n;
@@ -179,8 +187,6 @@ public class Algorithms {
         
         while (pointer != null) {
             nodeStack.add(pointer);
-            if (pointer.getPrev() != null)
-                cost.getAndAdd(pointer.isWhiteTileMoved() ? 1 : 30); // compute cost of solution
             pointer = pointer.getPrev();
         }
         while (!nodeStack.isEmpty()) nodePath.add(nodeStack.pop());
@@ -209,19 +215,18 @@ public class Algorithms {
     public static String DFID(Node start, Node goal)
     {
         AtomicInteger numOfNodes = new AtomicInteger();
-        AtomicInteger cost = new AtomicInteger();
         for (int limit = 0; limit < Integer.MAX_VALUE; limit++) {
             HashMap<String, Node> H = new HashMap<String, Node>();
-            String result = limited_DFS(start, goal, limit, H, numOfNodes, cost);
+            String result = limited_DFS(start, goal, limit, H, numOfNodes);
             if (!result.equals("cutoff")) return result;
         }
         return "";
     }
 
-    public static String limited_DFS(Node n, Node goal, int limit, HashMap<String,Node> H, AtomicInteger numOfNodes, AtomicInteger cost)
+    public static String limited_DFS(Node n, Node goal, int limit, HashMap<String,Node> H, AtomicInteger numOfNodes)
     {
         if (isGoal(n, goal))
-            return getPath(n, cost)+","+numOfNodes.get()+","+cost.get();
+            return getPath(n)+","+numOfNodes.get()+","+n.getCost();
         else if (limit == 0) return "cutoff";
         else {
             H.put(n.getBoard().toString(), n);
@@ -236,7 +241,7 @@ public class Algorithms {
                 if (H.containsKey(g.getBoard().toString())) continue;
                 H.put(g.getBoard().toString(), g);
                 numOfNodes.getAndIncrement();
-                String result = limited_DFS(g, goal, limit-1, H, numOfNodes, cost);
+                String result = limited_DFS(g, goal, limit-1, H, numOfNodes);
                 if (result.equals("cutoff")) isCutOff = true;
                 else if (!result.equals("fail")) return result;
             }
