@@ -35,12 +35,13 @@ public class Solver {
     public String getSolution()
     {
         String[] sol = this.solution.split(",");
-        if (sol.length >= 2) {
-            this.solution = sol[0];
-            this.numOfNodes = Integer.parseInt(sol[1]);
-            return this.solution+"\nnum: "+this.numOfNodes+"\ntime: "+String.format("%.3f",(double)time/1000000000);
-        }
-        else return sol[0];
+        String ret = sol[0];
+        this.numOfNodes = Integer.parseInt(sol[1]);
+        ret += "\nnum: "+this.numOfNodes;
+        this.cost = Integer.parseInt(sol[2]);
+        ret += "\ncost: "+this.cost;
+        if (this.withTime) ret += "\ntime: "+String.format("%.3f",(double)time/1000000000);
+        return ret;
     }
 
 }
