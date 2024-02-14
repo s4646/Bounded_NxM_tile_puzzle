@@ -1,6 +1,5 @@
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
-// import java.util.Queue;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -250,5 +249,38 @@ public class Algorithms {
             if (isCutOff == true) return "cutoff";
             else return "fail";
         }
+    }
+
+    public static String A_Star(Node start, Node goal)
+    {
+        AtomicInteger numOfNodes = new AtomicInteger();
+        NodePriorityQueue L = new NodePriorityQueue();
+        L.add(start);
+        HashMap<String, Node> C = new HashMap<String, Node>();
+        
+        while (!L.isEmpty()) {
+            Node n = L.poll();
+            // System.out.println("CURRENT NODE COST: "+n.getCost());
+            if (isGoal(n, goal))
+                return getPath(n)+","+numOfNodes.get()+","+n.getCost();
+            C.put(n.toString(), n);
+            
+            LinkedList<Character> operators = getValidOperators(n);
+            for (Character operator : operators) {
+                Node x = operate(n, operator);
+                if (x == null) continue;
+                n.addNext(x);
+                x.setPrev(n);
+                if (!C.containsKey(x.toString()) && !L.contains(x))
+                    L.add(x);
+                else if(C.get(x.toString()).getCost() > x.getCost()) {
+                    L.remove(x);
+                    L.add(x);
+                }
+                
+                numOfNodes.getAndIncrement();
+            }
+        }
+    return "false";
     }
 }
