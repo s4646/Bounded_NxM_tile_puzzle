@@ -16,7 +16,8 @@ public class NodePriorityQueue extends PriorityQueue<Node> implements Comparator
     @Override
     public int compare(Node n1, Node n2)
     {
-       return Integer.compare(n1.getCost(), n2.getCost());
+        return n1.compareTo(n2);
+       // return Integer.compare(n1.getCost(), n2.getCost());
     }
 
     // public Node get(Node n)
@@ -26,10 +27,5 @@ public class NodePriorityQueue extends PriorityQueue<Node> implements Comparator
     //             return item;
     //     }
     //     return null;
-    // }
-
-    // public int ManhattenDistance(int value, int rowIndex, int colIndex, int[] )
-    // {
-
     // }
 }
