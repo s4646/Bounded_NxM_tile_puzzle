@@ -47,13 +47,14 @@ public class Algorithms {
         int rows = size[0];
         int cols = size[1];
         String b = "";
+        int counter = 1;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                if ((i+1)*rows + j == (rows*cols)) {
+                if ((i == rows-1 && j == cols-1)) {
                     b += "_";
                 }
                 else {
-                    b += (i*rows + i + j + 1);
+                    b += counter++;
                 }
 
                 if (j != cols-1) {
@@ -251,7 +252,7 @@ public class Algorithms {
         }
     }
 
-    public static String A_Star(Node start, Node goal)
+    public static String A_Star(Node start, Node goal, boolean printOpenList)
     {
         AtomicInteger numOfNodes = new AtomicInteger();
         NodePriorityQueue L = new NodePriorityQueue();
@@ -259,6 +260,7 @@ public class Algorithms {
         HashMap<String, Node> C = new HashMap<String, Node>();
         
         while (!L.isEmpty()) {
+            if (printOpenList) printOpenList(L);
             Node n = L.poll();
             // System.out.println("CURRENT NODE COST: "+n.getCost());
             if (isGoal(n, goal))
@@ -282,5 +284,15 @@ public class Algorithms {
             }
         }
     return "false";
+    }
+
+    public static void printOpenList(NodePriorityQueue q)
+    {
+        System.out.println("Open List Size: "+q.size());
+        int counter = 0;
+        for (Node item : q) {
+            System.out.println("Item no. "+(counter++));
+            System.out.println(item.toString());
+        }
     }
 }
