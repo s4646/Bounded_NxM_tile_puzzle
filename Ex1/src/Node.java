@@ -65,6 +65,24 @@ public class Node implements Comparable<Node>{
         return this.cost;
     }
 
+    public int ManhattenDistance(Node n) // Heuristic Function
+    {
+        int dist = 0;
+        int [] boardSize = this.getBoard().getSize();
+        Tile[][] tiles = n.getBoard().getTiles();
+        
+        for (int i = 0; i < boardSize[0]; i++) {                 // rows -> Y
+            for (int j = 0; j < boardSize[1]; j++) {             // cols -> X
+                 if (tiles[i][j].getType() == 2) // Empty Tile
+                    continue;
+                int value = Integer.parseInt(tiles[i][j].getContent());
+                dist += Math.abs(i - (value-1) / boardSize[0]) + Math.abs(j - (value-1) % boardSize[1]);
+            
+            }
+        }
+        return dist;
+    }
+
     @Override
     public String toString()
     {
@@ -74,6 +92,6 @@ public class Node implements Comparable<Node>{
     @Override
     public int compareTo(Node ot)
     {
-        return Integer.compare(this.cost, ot.getCost());
+        return Integer.compare(this.cost + ManhattenDistance(this), ot.getCost() + ManhattenDistance(ot));
     }
 }
