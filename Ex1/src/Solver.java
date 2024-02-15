@@ -34,6 +34,11 @@ public class Solver {
             this.solution = Algorithms.A_Star(this.start, goal, this.printOpenList);
             time = System.nanoTime()-time;
         }
+        else if (this.algorithm.equals("IDA*")) {
+            time = System.nanoTime();
+            this.solution = Algorithms.IDA_Star(this.start, goal, this.printOpenList);
+            time = System.nanoTime()-time;
+        }
 
     }
 
