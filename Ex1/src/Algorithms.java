@@ -2,6 +2,7 @@ import java.util.Stack;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Algorithms {
@@ -256,7 +257,8 @@ public class Algorithms {
     public static String A_Star(Node start, Node goal, boolean printOpenList)
     {
         int numOfNodes = 0;
-        NodePriorityQueue L = new NodePriorityQueue();
+        NodeComparator cmp = new NodeComparator();
+        PriorityQueue<Node> L = new PriorityQueue<>(cmp);
         HashMap<String, Node> L_table = new HashMap<String, Node>();
         L.add(start);
         L_table.put(start.toString(), start);
@@ -279,7 +281,7 @@ public class Algorithms {
                     L.add(x);
                     L_table.put(x.toString(), x);
                 }
-                else if(L_table.get(x.toString()).compareTo(x) == 1) {
+                else if(cmp.compare(L_table.get(x.toString()), x) == 1) {
                     L.remove(L_table.remove(x.toString()));
                     L.add(L_table.put(x.toString(), x));
                 }
