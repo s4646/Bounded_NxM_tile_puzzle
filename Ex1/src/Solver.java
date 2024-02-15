@@ -31,7 +31,7 @@ public class Solver {
         }
         else if (this.algorithm.equals("A*")) {
             time = System.nanoTime();
-            this.solution = Algorithms.A_Star(this.start, goal);
+            this.solution = Algorithms.A_Star(this.start, goal, this.printOpenList);
             time = System.nanoTime()-time;
         }
 
@@ -41,10 +41,12 @@ public class Solver {
     {
         String[] sol = this.solution.split(",");
         String ret = sol[0];
-        this.numOfNodes = Integer.parseInt(sol[1]);
-        ret += "\nnum: "+this.numOfNodes;
-        this.cost = Integer.parseInt(sol[2]);
-        ret += "\ncost: "+this.cost;
+        if (sol.length > 1) {
+            this.numOfNodes = Integer.parseInt(sol[1]);
+            ret += "\nnum: "+this.numOfNodes;
+            this.cost = Integer.parseInt(sol[2]);
+            ret += "\ncost: "+this.cost;
+        }
         if (this.withTime) ret += "\ntime: "+String.format("%.3f",(double)time/1000000000)+" seconds";
         return ret;
     }
