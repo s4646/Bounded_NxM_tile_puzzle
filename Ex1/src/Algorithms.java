@@ -7,7 +7,7 @@ public class Algorithms {
 
     public static boolean isGoal(Node current, Node goal)
     {
-        return current.getBoard().toString().equals(goal.getBoard().toString());
+        return current.toString().equals(goal.toString());
     }
 
     public static LinkedList<Character> getValidOperators(Node n)
@@ -228,7 +228,7 @@ public class Algorithms {
             return getPath(n)+","+numOfNodes.get()+","+n.getCost();
         else if (limit == 0) return "cutoff";
         else {
-            H.put(n.getBoard().toString(), n);
+            H.put(n.toString(), n);
             boolean isCutOff = false;
             
             LinkedList<Character> operators = getValidOperators(n);
@@ -237,15 +237,15 @@ public class Algorithms {
                 if (g == null) continue;
                 n.addNext(g);
                 g.setPrev(n);
-                if (H.containsKey(g.getBoard().toString())) continue;
-                H.put(g.getBoard().toString(), g);
+                if (H.containsKey(g.toString())) continue;
+                H.put(g.toString(), g);
                 numOfNodes.getAndIncrement();
                 String result = limited_DFS(g, goal, limit-1, H, numOfNodes);
                 if (result.equals("cutoff")) isCutOff = true;
                 else if (!result.equals("fail")) return result;
             }
 
-            H.remove(n.getBoard().toString());
+            H.remove(n.toString());
             if (isCutOff == true) return "cutoff";
             else return "fail";
         }
