@@ -1,7 +1,8 @@
 import java.util.Stack;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Algorithms {
 
@@ -254,17 +255,18 @@ public class Algorithms {
 
     public static String A_Star(Node start, Node goal, boolean printOpenList)
     {
-        AtomicInteger numOfNodes = new AtomicInteger();
+        int numOfNodes = 0;
         NodePriorityQueue L = new NodePriorityQueue();
+        HashMap<String, Node> L_table = new HashMap<String, Node>();
         L.add(start);
+        L_table.put(start.toString(), start);
         HashMap<String, Node> C = new HashMap<String, Node>();
         
         while (!L.isEmpty()) {
-            if (printOpenList) printOpenList(L);
+            if (printOpenList) printOpenList(L_table);
             Node n = L.poll();
-            // System.out.println("CURRENT NODE COST: "+n.getCost());
             if (isGoal(n, goal))
-                return getPath(n)+","+numOfNodes.get()+","+n.getCost();
+                return getPath(n)+","+numOfNodes+","+n.getCost();
             C.put(n.toString(), n);
             
             LinkedList<Character> operators = getValidOperators(n);
@@ -273,26 +275,31 @@ public class Algorithms {
                 if (x == null) continue;
                 n.addNext(x);
                 x.setPrev(n);
-                if (!C.containsKey(x.toString()) && !L.contains(x))
+                if (!C.containsKey(x.toString()) && !L_table.containsKey(x.toString())) {
                     L.add(x);
-                else if(C.get(x.toString()).getCost() > x.getCost()) {
-                    L.remove(x);
-                    L.add(x);
+                    L_table.put(x.toString(), x);
+                }
+                else if(L_table.get(x.toString()).compareTo(x) == 1) {
+                    L.remove(L_table.remove(x.toString()));
+                    L.add(L_table.put(x.toString(), x));
                 }
                 
-                numOfNodes.getAndIncrement();
+                numOfNodes++;
             }
         }
     return "false";
     }
 
-    public static void printOpenList(NodePriorityQueue q)
+    public static void printOpenList(HashMap<String,Node> hm)
     {
-        System.out.println("Open List Size: "+q.size());
+        System.out.println("Open List Size: "+hm.size());
         int counter = 0;
-        for (Node item : q) {
+
+        for(Map.Entry<String, Node> entry : hm.entrySet()) {
+            String key = entry.getKey();
+            // Node value = entry.getValue();
             System.out.println("Item no. "+(counter++));
-            System.out.println(item.toString());
+            System.out.println(key);
         }
     }
 }
