@@ -214,6 +214,19 @@ public class Algorithms {
         return path;
     }
     
+    public static void printOpenList(HashMap<String,Node> hm)
+    {
+        System.out.println("Open List Size: "+hm.size());
+        int counter = 0;
+
+        for(Map.Entry<String, Node> entry : hm.entrySet()) {
+            String key = entry.getKey();
+            // Node value = entry.getValue();
+            System.out.println("Item no. "+(counter++));
+            System.out.println(key);
+        }
+    }
+    
     public static String DFID(Node start, Node goal)
     {
         AtomicInteger numOfNodes = new AtomicInteger();
@@ -283,7 +296,8 @@ public class Algorithms {
                 }
                 else if(cmp.compare(L_table.get(x.toString()), x) == 1) {
                     L.remove(L_table.remove(x.toString()));
-                    L.add(L_table.put(x.toString(), x));
+                    L.add(x);
+                    L_table.put(x.toString(), x);
                 }
                 
                 numOfNodes++;
@@ -292,16 +306,59 @@ public class Algorithms {
     return "false";
     }
 
-    public static void printOpenList(HashMap<String,Node> hm)
+    public static String IDA_Star(Node start, Node goal, boolean printOpenList)
     {
-        System.out.println("Open List Size: "+hm.size());
-        int counter = 0;
+        Stack<Node> L = new Stack<Node>();
+        NodeComparator cmp = new NodeComparator();
+        HashMap<String, Node> H = new HashMap<String, Node>();
+        int t = cmp.ManhattenDistance(start);
+        int minF;
+        int numOfNodes = 0;
+        while (t != Integer.MAX_VALUE) {
+            start.setOut(false);
+            minF = Integer.MAX_VALUE;
+            L.add(start);
+            H.put(start.toString(), start);
+            
+            while (!L.isEmpty()) {
+                Node n = L.pop();
+                if (n.isOut())
+                    H.remove(n.toString());
+                else {
+                    n.setOut(true);
+                    L.add(n);
 
-        for(Map.Entry<String, Node> entry : hm.entrySet()) {
-            String key = entry.getKey();
-            // Node value = entry.getValue();
-            System.out.println("Item no. "+(counter++));
-            System.out.println(key);
+                    LinkedList<Character> operators = getValidOperators(n);
+                    for (Character operator : operators) {
+                        Node g = operate(n, operator);
+                        if (g == null) continue;
+                        n.addNext(g);
+                        g.setPrev(n);
+                        numOfNodes++;
+
+                        int Fg = g.getCost() + cmp.ManhattenDistance(g);
+                        if (Fg > t) {
+                            minF = Integer.min(minF, Fg);
+                            continue;
+                        }
+                        if (H.containsKey(g.toString()) && g.isOut())
+                            continue;
+                        if (H.containsKey(g.toString()) && !g.isOut()) {
+                            Node g_ = H.get(g.toString());
+                            if (g_.getCost() + cmp.ManhattenDistance(g_) > g.getCost() + cmp.ManhattenDistance(g))
+                                L.remove(H.remove(g_.toString()));
+                            else
+                                continue;
+                        }
+                        if (isGoal(g, goal))
+                            return getPath(g)+","+numOfNodes+","+g.getCost();
+                        L.add(g);
+                        H.put(g.toString(), g);
+                    }
+                }    
+            }
+            t = minF;
         }
+        return "false";
     }
 }
