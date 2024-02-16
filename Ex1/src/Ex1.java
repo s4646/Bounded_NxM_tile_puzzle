@@ -1,6 +1,6 @@
-// import java.util.LinkedList;
+import java.io.FileWriter;
 
-public class Main {
+public class Ex1 {
     public static void main(String[] args) throws Exception {
         // System.out.println("Hello, World!");
         InputReader myReader = new InputReader();
@@ -10,6 +10,10 @@ public class Main {
         Board myBoard = new Board(myReader.getBoard(), myReader.getWhiteTiles());
         Solver mySolver = new Solver(myBoard, myReader.getAlgorithm(), myReader.getWithTime(), myReader.getPrintOpenList());
         mySolver.solve();
-        System.out.println(mySolver.getSolution());
+        // System.out.println(mySolver.getSolution());
+
+        FileWriter myWriter = new FileWriter("output.txt");
+        myWriter.write(mySolver.getSolution());
+        myWriter.close();
     }
 }
