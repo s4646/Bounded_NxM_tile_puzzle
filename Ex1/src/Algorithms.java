@@ -6,6 +6,11 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/*
+ * DFID, A*, IDA* and DFBnB are as similar as possible to the pseudo code shown in lectures
+ * Specifically L2.pdf and L3.pdf
+ * https://drive.google.com/drive/folders/1EI486BhRIwRlc5qozl4J-fqC8RhxX3Ko
+ */
 public class Algorithms {
 
     public static int factorial(int n)
