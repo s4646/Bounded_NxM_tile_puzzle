@@ -1,4 +1,5 @@
 import java.util.Stack;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -6,6 +7,15 @@ import java.util.PriorityQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Algorithms {
+
+    public static int factorial(int n)
+    {
+        int fact = 1;    
+        for(int i=1;i <= n; i++)   
+            fact=fact*i;
+        
+            return fact;
+    }
 
     public static boolean isGoal(Node current, Node goal)
     {
@@ -321,6 +331,7 @@ public class Algorithms {
             H.put(start.toString(), start);
             
             while (!L.isEmpty()) {
+                if (printOpenList) printOpenList(H);
                 Node n = L.pop();
                 if (n.isOut())
                     H.remove(n.toString());
@@ -360,5 +371,89 @@ public class Algorithms {
             t = minF;
         }
         return "false";
+    }
+
+    public static String DFBnB(Node start, Node goal, boolean printOpenList)
+    {
+        NodeComparator cmp = new NodeComparator();
+        Stack<Node> L = new Stack<Node>();
+        HashMap<String, Node> H = new HashMap<String, Node>();
+        L.add(start);
+        H.put(start.toString(), start);
+        String result = "no path";
+        int[] boardSize = start.getBoard().getSize();
+        int t = Integer.min(Integer.MAX_VALUE, factorial(boardSize[0]*boardSize[1]-1));
+        int numOfNodes = 0;
+
+        while (!L.isEmpty()) {
+            if (printOpenList) printOpenList(H);
+            Node n = L.pop();
+            if (n.isOut())
+                H.remove(n.toString());
+            else {
+                n.setOut(true);
+                L.add(n);
+
+                LinkedList<Character> operators = getValidOperators(n);
+                LinkedList<Node> N = new LinkedList<Node>();
+                for (Character operator : operators) {
+                    Node temp = operate(n,operator);
+                    if (temp != null) {
+                        n.addNext(temp);
+                        temp.setPrev(n);
+                        numOfNodes++;
+                        N.add(temp);
+                    }
+                }
+                Collections.sort(N, cmp);
+                
+                for (int i = 0; i < N.size(); i++) {
+                    Node g = N.get(i);
+                    if (g.getCost() + cmp.ManhattenDistance(g) >= t) {
+                        boolean remove = false;
+                        for (int j = 0; j < N.size(); j++) {
+                            Node temp = N.get(j);
+                            if (temp.toString().equals(g.toString()))
+                                remove = true;
+                            if (remove) {
+                                N.remove(temp);
+                                j--;
+                            }
+                        }
+                    }
+                    else if (H.containsKey(g.toString()) && g.isOut())
+                        N.remove(g);
+                    else if (H.containsKey(g.toString()) && !g.isOut()) {
+                        Node g_ = H.get(g.toString());
+                        if (g_.getCost() + cmp.ManhattenDistance(g_) <= g.getCost() + cmp.ManhattenDistance(g))
+                            N.remove(g);
+                        else
+                            L.remove(H.remove(g_.toString()));
+                    }
+                    else if (isGoal(g, goal)) {
+                        t = g.getCost() + cmp.ManhattenDistance(g);
+                        result = getPath(g)+","+numOfNodes+","+g.getCost();
+                        boolean remove = false;
+                        for (int j = 0; j < N.size(); j++) {
+                            Node temp = N.get(j);
+                            if (temp.toString().equals(g.toString()))
+                                remove = true;
+                            if (remove) {
+                                N.remove(temp);
+                                j--;
+                            }
+                        }
+                    }
+                }
+                Collections.reverse(N);
+                for (int i = 0; i < N.size(); i++) {
+                    Node k = N.get(i);
+                    L.add(k);
+                    H.put(k.toString(), k);
+                }
+            }
+        }
+
+        return result;
     }
 }
