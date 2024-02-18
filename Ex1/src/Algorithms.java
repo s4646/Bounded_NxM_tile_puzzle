@@ -191,8 +191,9 @@ public class Algorithms {
             default:
                 break;
         }
-
-        return kid;
+        if (n.getPrev() != null && kid.toString().equals(n.getPrev().toString()))
+            return null;
+        else return kid;
     }
     
     public static String getPath(Node n)
@@ -245,7 +246,7 @@ public class Algorithms {
     public static String DFID(Node start, Node goal)
     {
         AtomicInteger numOfNodes = new AtomicInteger();
-        for (int limit = 0; limit < Integer.MAX_VALUE; limit++) {
+        for (int limit = 1; limit < Integer.MAX_VALUE; limit++) {
             HashMap<String, Node> H = new HashMap<String, Node>();
             String result = limited_DFS(start, goal, limit, H, numOfNodes);
             if (!result.equals("cutoff")) return result;
@@ -266,11 +267,11 @@ public class Algorithms {
             for (Character operator : operators) {
                 Node g = operate(n, operator);
                 if (g == null) continue;
+                numOfNodes.getAndIncrement();
                 n.addNext(g);
                 g.setPrev(n);
                 if (H.containsKey(g.toString())) continue;
                 H.put(g.toString(), g);
-                numOfNodes.getAndIncrement();
                 String result = limited_DFS(g, goal, limit-1, H, numOfNodes);
                 if (result.equals("cutoff")) isCutOff = true;
                 else if (!result.equals("fail")) return result;
@@ -348,18 +349,18 @@ public class Algorithms {
                     for (Character operator : operators) {
                         Node g = operate(n, operator);
                         if (g == null) continue;
+                        numOfNodes++;
                         n.addNext(g);
                         g.setPrev(n);
-                        numOfNodes++;
 
                         int Fg = g.getCost() + cmp.ManhattenDistance(g);
                         if (Fg > t) {
                             minF = Integer.min(minF, Fg);
                             continue;
                         }
-                        if (H.containsKey(g.toString()) && g.isOut())
+                        if (H.containsKey(g.toString()) && H.get(g.toString()).isOut())
                             continue;
-                        if (H.containsKey(g.toString()) && !g.isOut()) {
+                        if (H.containsKey(g.toString()) && !H.get(g.toString()).isOut()) {
                             Node g_ = H.get(g.toString());
                             if (g_.getCost() + cmp.ManhattenDistance(g_) > g.getCost() + cmp.ManhattenDistance(g))
                                 L.remove(H.remove(g_.toString()));
@@ -459,6 +460,11 @@ public class Algorithms {
             }
         }
 
-        return result;
+        if (result.equals("no path")) return result;
+        else {
+            String[] res = result.split(",");
+            result = res[0]+","+numOfNodes+","+res[2];
+            return result;
+        }
     }
 }
