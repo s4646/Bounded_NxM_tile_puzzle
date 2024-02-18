@@ -85,11 +85,13 @@ public class Algorithms {
 
     public static Node operate(Node n, char operator)
     {
-        Node kid = new Node(n.getBoard().clone());
-        Tile[][] tiles = kid.getBoard().getTiles();
-        int[] emptyloc = kid.getBoard().getEmptyTileLocation();
+        Board b = n.getBoard().clone();
+        Tile[][] tiles = b.getTiles();
+        int[] emptyloc = b.getEmptyTileLocation();
         int[] swaploc = new int[2];
         Tile temp = null;
+        int cost = 0;
+        boolean isWhiteTileMoved = false;
 
         switch (operator) {
             case 'L':
@@ -100,14 +102,14 @@ public class Algorithms {
                 // white tile
                 if (temp.getType() == 1) {
                     if (temp.getMovesLeft() > 0) {
-                        kid.getBoard().getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
-                        kid.setWhiteTileMoved(true);
-                        kid.setCost(n.getCost()+1);
+                        b.getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
+                        isWhiteTileMoved = true;
+                        cost = n.getCost()+1;
                     }
                     else
                         return null;
                 }
-                else kid.setCost(n.getCost()+30);
+                else cost = n.getCost()+30;
                 
                 // swap tiles
                 tiles[swaploc[0]][swaploc[1]] = tiles[emptyloc[0]][emptyloc[1]];
@@ -124,14 +126,14 @@ public class Algorithms {
                 // white tile
                 if (temp.getType() == 1) {
                     if (temp.getMovesLeft() > 0) {
-                        kid.getBoard().getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
-                        kid.setWhiteTileMoved(true);
-                        kid.setCost(n.getCost()+1);
+                        b.getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
+                        isWhiteTileMoved = true;
+                        cost = n.getCost()+1;
                     }
                     else
                         return null;
                 }
-                else kid.setCost(n.getCost()+30);
+                else cost = n.getCost()+30;
                 
                 // swap tiles
                 tiles[swaploc[0]][swaploc[1]] = tiles[emptyloc[0]][emptyloc[1]];
@@ -148,14 +150,14 @@ public class Algorithms {
                 // white tile
                 if (temp.getType() == 1) {
                     if (temp.getMovesLeft() > 0) {
-                        kid.getBoard().getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
-                        kid.setWhiteTileMoved(true);
-                        kid.setCost(n.getCost()+1);
+                        b.getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
+                        isWhiteTileMoved = true;
+                        cost = n.getCost()+1;
                     }
                     else
                         return null;
                 }
-                else kid.setCost(n.getCost()+30);
+                else cost = n.getCost()+30;
                 
                 // swap tiles
                 tiles[swaploc[0]][swaploc[1]] = tiles[emptyloc[0]][emptyloc[1]];
@@ -172,14 +174,14 @@ public class Algorithms {
                 // white tile
                 if (temp.getType() == 1) {
                     if (temp.getMovesLeft() > 0) {
-                        kid.getBoard().getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
-                        kid.setWhiteTileMoved(true);
-                        kid.setCost(n.getCost()+1);
+                        b.getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
+                        isWhiteTileMoved = true;
+                        cost = n.getCost()+1;
                     }
                     else
                         return null;
                 }
-                else kid.setCost(n.getCost()+30);
+                else cost = n.getCost()+30;
                 
                 // swap tiles
                 tiles[swaploc[0]][swaploc[1]] = tiles[emptyloc[0]][emptyloc[1]];
@@ -191,9 +193,14 @@ public class Algorithms {
             default:
                 break;
         }
-        if (n.getPrev() != null && kid.toString().equals(n.getPrev().toString()))
+        if (n.getPrev() != null && b.toString().equals(n.getPrev().toString()))
             return null;
-        else return kid;
+        else {
+            Node kid = new Node(b);
+            kid.setWhiteTileMoved(isWhiteTileMoved);
+            kid.setCost(cost);
+            return kid;
+        }
     }
     
     public static String getPath(Node n)
