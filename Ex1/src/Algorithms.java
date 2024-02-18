@@ -416,15 +416,10 @@ public class Algorithms {
                 for (int i = 0; i < N.size(); i++) {
                     Node g = N.get(i);
                     if (g.getCost() + cmp.ManhattenDistance(g) >= t) {
-                        boolean remove = false;
-                        for (int j = 0; j < N.size(); j++) {
+                        for (int j = i; j < N.size(); j++) {
                             Node temp = N.get(j);
-                            if (temp.toString().equals(g.toString()))
-                                remove = true;
-                            if (remove) {
                                 N.remove(temp);
                                 j--;
-                            }
                         }
                     }
                     else if (H.containsKey(g.toString()) && g.isOut())
@@ -439,15 +434,11 @@ public class Algorithms {
                     else if (isGoal(g, goal)) {
                         t = g.getCost() + cmp.ManhattenDistance(g);
                         result = getPath(g)+","+numOfNodes+","+g.getCost();
-                        boolean remove = false;
-                        for (int j = 0; j < N.size(); j++) {
+                        
+                        for (int j = i; j < N.size(); j++) {
                             Node temp = N.get(j);
-                            if (temp.toString().equals(g.toString()))
-                                remove = true;
-                            if (remove) {
                                 N.remove(temp);
                                 j--;
-                            }
                         }
                     }
                 }
