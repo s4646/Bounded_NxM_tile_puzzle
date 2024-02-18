@@ -274,12 +274,12 @@ public class Algorithms {
                 H.put(g.toString(), g);
                 String result = limited_DFS(g, goal, limit-1, H, numOfNodes);
                 if (result.equals("cutoff")) isCutOff = true;
-                else if (!result.equals("fail")) return result;
+                else if (!result.equals("no path")) return result;
             }
 
             H.remove(n.toString());
             if (isCutOff == true) return "cutoff";
-            else return "fail";
+            else return "no path";
         }
     }
 
@@ -319,7 +319,7 @@ public class Algorithms {
                 numOfNodes++;
             }
         }
-    return "false";
+    return "no path";
     }
 
     public static String IDA_Star(Node start, Node goal, boolean printOpenList)
@@ -376,7 +376,7 @@ public class Algorithms {
             }
             t = minF;
         }
-        return "false";
+        return "no path";
     }
 
     public static String DFBnB(Node start, Node goal, boolean printOpenList)
