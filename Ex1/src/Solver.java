@@ -39,7 +39,7 @@ public class Solver {
             this.solution = Algorithms.IDA_Star(this.start, goal, this.printOpenList);
             time = System.nanoTime()-time;
         }
-        else if (this.algorithm.equals("DFBNB")) {
+        else if (this.algorithm.equals("DFBnB")) {
             time = System.nanoTime();
             this.solution = Algorithms.DFBnB(this.start, goal, this.printOpenList);
             time = System.nanoTime()-time;
@@ -53,11 +53,11 @@ public class Solver {
         String ret = sol[0];
         if (sol.length > 1) {
             this.numOfNodes = Integer.parseInt(sol[1]);
-            ret += "\nnum: "+this.numOfNodes;
+            ret += "\nNum: "+this.numOfNodes;
             this.cost = Integer.parseInt(sol[2]);
-            ret += "\ncost: "+this.cost;
+            ret += "\nCost: "+this.cost;
         }
-        if (this.withTime) ret += "\ntime: "+String.format("%.3f",(double)time/1000000000)+" seconds";
+        if (this.withTime) ret += "\n"+String.format("%.3f",(double)time/1000000000)+" seconds";
         return ret;
     }
 
