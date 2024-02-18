@@ -333,7 +333,7 @@ public class Algorithms {
         while (t != Integer.MAX_VALUE) {
             start.setOut(false);
             minF = Integer.MAX_VALUE;
-            L.add(start);
+            L.push(start);
             H.put(start.toString(), start);
             
             while (!L.isEmpty()) {
@@ -343,7 +343,7 @@ public class Algorithms {
                     H.remove(n.toString());
                 else {
                     n.setOut(true);
-                    L.add(n);
+                    L.push(n);
 
                     LinkedList<Character> operators = getValidOperators(n);
                     for (Character operator : operators) {
@@ -369,7 +369,7 @@ public class Algorithms {
                         }
                         if (isGoal(g, goal))
                             return getPath(g)+","+numOfNodes+","+g.getCost();
-                        L.add(g);
+                        L.push(g);
                         H.put(g.toString(), g);
                     }
                 }    
@@ -384,7 +384,7 @@ public class Algorithms {
         NodeComparator cmp = new NodeComparator();
         Stack<Node> L = new Stack<Node>();
         HashMap<String, Node> H = new HashMap<String, Node>();
-        L.add(start);
+        L.push(start);
         H.put(start.toString(), start);
         String result = "no path";
         int[] boardSize = start.getBoard().getSize();
@@ -398,7 +398,7 @@ public class Algorithms {
                 H.remove(n.toString());
             else {
                 n.setOut(true);
-                L.add(n);
+                L.push(n);
 
                 LinkedList<Character> operators = getValidOperators(n);
                 LinkedList<Node> N = new LinkedList<Node>();
@@ -454,7 +454,7 @@ public class Algorithms {
                 Collections.reverse(N);
                 for (int i = 0; i < N.size(); i++) {
                     Node k = N.get(i);
-                    L.add(k);
+                    L.push(k);
                     H.put(k.toString(), k);
                 }
             }
