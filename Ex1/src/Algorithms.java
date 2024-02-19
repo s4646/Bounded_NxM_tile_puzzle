@@ -193,6 +193,9 @@ public class Algorithms {
             default:
                 break;
         }
+
+        // check whether this is a "reverse" operator
+        // if the next node takes us back to the father node, dont create it 
         if (n.getPrev() != null && b.toString().equals(n.getPrev().toString()))
             return null;
         else {
@@ -223,6 +226,7 @@ public class Algorithms {
             int[] currEmptyLoc = curr.getBoard().getEmptyTileLocation();
             int[] nextEmptyLoc = next.getBoard().getEmptyTileLocation();
 
+            // given two nodes, determine the operator by the empty tile's location
             if (nextEmptyLoc[0]-currEmptyLoc[0] == 1)
                 path += curr.getBoard().getTiles()[nextEmptyLoc[0]][nextEmptyLoc[1]].getContent()+"U";
             else if (nextEmptyLoc[0]-currEmptyLoc[0] == -1)
