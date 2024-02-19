@@ -254,18 +254,18 @@ public class Algorithms {
         }
     }
     
-    public static String DFID(Node start, Node goal)
+    public static String DFID(Node start, Node goal, boolean printOpenList)
     {
         AtomicInteger numOfNodes = new AtomicInteger();
         for (int limit = 1; limit < Integer.MAX_VALUE; limit++) {
             HashMap<String, Node> H = new HashMap<String, Node>();
-            String result = limited_DFS(start, goal, limit, H, numOfNodes);
+            String result = limited_DFS(start, goal, limit, H, numOfNodes, printOpenList);
             if (!result.equals("cutoff")) return result;
         }
         return "";
     }
 
-    public static String limited_DFS(Node n, Node goal, int limit, HashMap<String,Node> H, AtomicInteger numOfNodes)
+    public static String limited_DFS(Node n, Node goal, int limit, HashMap<String,Node> H, AtomicInteger numOfNodes, boolean printOpenList)
     {
         if (isGoal(n, goal))
             return getPath(n)+","+numOfNodes.get()+","+n.getCost();
@@ -283,7 +283,8 @@ public class Algorithms {
                 g.setPrev(n);
                 if (H.containsKey(g.toString())) continue;
                 H.put(g.toString(), g);
-                String result = limited_DFS(g, goal, limit-1, H, numOfNodes);
+                if (printOpenList) printOpenList(H);
+                String result = limited_DFS(g, goal, limit-1, H, numOfNodes, printOpenList);
                 if (result.equals("cutoff")) isCutOff = true;
                 else if (!result.equals("no path")) return result;
             }

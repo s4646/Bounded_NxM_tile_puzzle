@@ -26,7 +26,7 @@ public class Solver {
         
         if (this.algorithm.equals("DFID")) {
             time = System.nanoTime();
-            this.solution = Algorithms.DFID(this.start, goal);
+            this.solution = Algorithms.DFID(this.start, goal, this.printOpenList);
             time = System.nanoTime()-time;
         }
         else if (this.algorithm.equals("A*")) {
