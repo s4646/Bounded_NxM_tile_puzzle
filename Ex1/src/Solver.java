@@ -54,8 +54,13 @@ public class Solver {
         if (sol.length > 1) {
             this.numOfNodes = Integer.parseInt(sol[1]);
             ret += "\nNum: "+this.numOfNodes;
-            this.cost = Integer.parseInt(sol[2]);
-            ret += "\nCost: "+this.cost;
+            if (sol[0].equals("no path")) {
+                ret += "\nCost: ";
+            }
+            else {
+                this.cost = Integer.parseInt(sol[2]);
+                ret += "\nCost: "+this.cost;
+            }
         }
         if (this.withTime) ret += "\n"+String.format("%.3f",(double)time/1000000000)+" seconds";
         return ret;
