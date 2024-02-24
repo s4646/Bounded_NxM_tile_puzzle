@@ -62,6 +62,11 @@ public class Solver {
                 ret += "\nCost: "+this.cost;
             }
         }
+        else if (sol[0].equals("no path")) {
+            ret += "\nNum: "+this.numOfNodes;
+            ret += "\nCost: "+this.cost;
+
+        }
         if (this.withTime) ret += "\n"+String.format("%.3f",(double)time/1000000000)+" seconds";
         return ret;
     }
