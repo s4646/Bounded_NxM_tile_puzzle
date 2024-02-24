@@ -102,7 +102,8 @@ public class Algorithms {
                 // white tile
                 if (temp.getType() == 1) {
                     if (temp.getMovesLeft() > 0) {
-                        b.getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
+                        temp.setMoves(temp.getMovesLeft() - 1);
+                        b.getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft());
                         isWhiteTileMoved = true;
                         cost = n.getCost()+1;
                     }
@@ -126,7 +127,8 @@ public class Algorithms {
                 // white tile
                 if (temp.getType() == 1) {
                     if (temp.getMovesLeft() > 0) {
-                        b.getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
+                        temp.setMoves(temp.getMovesLeft() - 1);
+                        b.getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft());
                         isWhiteTileMoved = true;
                         cost = n.getCost()+1;
                     }
@@ -150,7 +152,8 @@ public class Algorithms {
                 // white tile
                 if (temp.getType() == 1) {
                     if (temp.getMovesLeft() > 0) {
-                        b.getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
+                        temp.setMoves(temp.getMovesLeft() - 1);
+                        b.getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft());
                         isWhiteTileMoved = true;
                         cost = n.getCost()+1;
                     }
@@ -174,7 +177,8 @@ public class Algorithms {
                 // white tile
                 if (temp.getType() == 1) {
                     if (temp.getMovesLeft() > 0) {
-                        b.getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft() - 1);
+                        temp.setMoves(temp.getMovesLeft() - 1);
+                        b.getWhiteTiles().replace(temp.getContent(), temp.getMovesLeft());
                         isWhiteTileMoved = true;
                         cost = n.getCost()+1;
                     }
