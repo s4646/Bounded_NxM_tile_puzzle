@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /*
@@ -13,6 +14,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Algorithms {
 
+    /*
+     * factorial of n for DBnB
+     */
     public static int factorial(int n)
     {
         int fact = 1;    
@@ -83,8 +87,34 @@ public class Algorithms {
         return b;
     }
 
+    /* 
+     * if node has white tile which cannot be moved and is not in position,
+     * no solution will come from this node's route. we can discard this node
+     */
+    public static boolean canContinue(Node n)
+    {
+        Tile[][] tiles =n.getBoard().getTiles();
+        int[] boardSize = n.getBoard().getSize();
+        HashMap<String, Integer> whiteTiles = n.getBoard().getWhiteTiles();
+        Set<String> keys = whiteTiles.keySet();
+        
+        for (String key : keys) {
+            if (whiteTiles.get(key) > 0)
+                continue;
+            
+            int value = Integer.parseInt(key);
+            if (!tiles[(value-1) / boardSize[1]][(value-1) % boardSize[1]].getContent().equals(key)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static Node operate(Node n, char operator)
     {
+        if (!canContinue(n))
+            return null;
+        
         Board b = n.getBoard().clone();
         Tile[][] tiles = b.getTiles();
         int[] emptyloc = b.getEmptyTileLocation();
